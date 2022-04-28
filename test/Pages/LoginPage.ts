@@ -1,33 +1,43 @@
 class LoginPage {
 
     async navigateToLoginPage() {
-        await (await $(`//*[@class="login"]`)).click();
+        await (await $(`//*[@id="header"]/div[2]/div/div/nav/div[1]/a`)).click();
     }
     async usersignIn(emailId, password) {
         let EmailId = await $('//*[@id="email"]')
         EmailId.setValue(emailId)
-        // Application need static wait
-        await browser.pause(10000)
+
+        await (await $('//*[@id="passwd"]')).waitForDisplayed()
         let Password = await $('//*[@id="passwd"]')
         Password.setValue(password)
-        // Application need static wait
-        await browser.pause(10000)
-        let SignInButton = await $(`//*[@id="SubmitLogin"]`)
+
+        await (await $(`//*[@id="SubmitLogin"]`)).waitForDisplayed()
+        let SignInButton = await (await $(`//*[@id="SubmitLogin"]`))
         SignInButton.click();
-        // Application need static wait
-        await browser.pause(10000)
+
     }
-    async createEmailAndNavigate(newEmail){
-        let NewEmail= await $(`//*[@id="email_create"]`)
+    async createEmailAndNavigate(newEmail) {
+        
+        let NewEmail = await $(`//*[@id="email_create"]`)
         NewEmail.setValue(newEmail)
-        await browser.pause(10000)
+
+        await (await $(`//*[@id="SubmitCreate"]`)).waitForClickable();
         let button = await $(`//*[@id="SubmitCreate"]`)
         button.click()
     }
-    async errorMessage(){
+    async errorMessage() {
         let errorMessage = await (await $(`//*[@id="create_account_error"]`)).getText()
         console.log("ErrorMessage is: " + errorMessage)
         return errorMessage;
+    }
+    async getUsername() {
+        await (await $(`//*[@id="header"]/div[2]/div/div/nav/div[1]/a/span`)).waitForDisplayed();
+        const username = await (await $(`//*[@id="header"]/div[2]/div/div/nav/div[1]/a/span`)).getText();
+        return username;
+    }
+    async Logout(){
+        await (await $(`//*[@id="header"]/div[2]/div/div/nav/div[2]/a`)).waitForDisplayed();
+        await (await $(`//*[@id="header"]/div[2]/div/div/nav/div[2]/a`)).click();
     }
 
 

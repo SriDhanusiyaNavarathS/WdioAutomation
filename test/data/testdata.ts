@@ -11,7 +11,7 @@ const data = {
         Username: "Divya M"
     },
     RegisterDetails: new RegisterationPage(
-        "Divya2@gmail.com",
+        "Divya8@gmail.com",
         "Divya",
         "SM", 
         "abcd@123",

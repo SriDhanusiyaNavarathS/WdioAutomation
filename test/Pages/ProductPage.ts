@@ -1,33 +1,38 @@
 import data from "../data/testdata";
 
 class ProductPage {
-    async navidateAndSelectProduct() {
+    async navigateAndSelectProduct() {
+
         let Dresses = await $(`//*[@id="block_top_menu"]/ul/li[2]`)
+        Dresses.waitForClickable()
         Dresses.click();
 
         let PrintedDress = await $(`//*[@id="categories_block_left"]/div/ul/li[2]/a`)
+        PrintedDress.waitForClickable()
         await PrintedDress.click();
 
         const SelectProduct = await $('//*[@id="center_column"]/ul/li/div/div[2]/h5/a');
         await SelectProduct.scrollIntoView()
         await SelectProduct.click();
-        await browser.pause(1000)
+        //await browser.pause(1000)
     }
     async proceedToPayment() {
         let navigateToPayment = await $(`//*[@id="center_column"]/p[2]/a[1]`)
+        navigateToPayment.waitForClickable()
         navigateToPayment.click();
 
         let navigateNextToPayment = await $(`//*[@id="center_column"]/form/p/button`)
+        navigateNextToPayment.waitForClickable()
         navigateNextToPayment.click();
-        await browser.pause(1000)
+
 
         let selectTermsOfService = await $(`/html/body/div/div[2]/div/div[3]/div/div/form/div/p[2]/div/span/input`)
+        selectTermsOfService.waitForClickable()
         selectTermsOfService.click();
-        await browser.pause(10000)
 
         let proceedPayment = await $('//*[@id="form"]/p/button')
+        proceedPayment.waitForClickable()
         proceedPayment.click();
-        await browser.pause(1000)
     }
 
     async addProductCart() {
@@ -35,14 +40,17 @@ class ProductPage {
         size.selectByAttribute('value', '2')
 
         const color = await $(`//*[@name="Pink"]`);
+        color.waitForClickable()
         await color.click();
 
         const addCart = await $(`//*[@id="add_to_cart"]/button`)
+
         await addCart.click();
-        await browser.pause(1000)
+
     }
 
     async getProductDetails() {
+        await (await $(`//*[@id="layer_cart"]/div[1]/div[2]/div[3]/span`)).waitForDisplayed()
         let getPrice = await (await $(`//*[@id="layer_cart"]/div[1]/div[2]/div[3]/span`)).getText()
         data.GetData.Price.push(getPrice)
 
@@ -64,9 +72,15 @@ class ProductPage {
 
     }
     async checkOut() {
-        let checkout = await $(`//*[@id="layer_cart"]/div[1]/div[2]/div[4]/a`)
-        checkout.click();
-        await browser.pause(1000)
+
+        await browser.waitUntil(
+            async () => await $(`//*[@id="layer_cart"]/div[1]/div[2]/div[4]/a`).isClickable(),
+            {
+                timeout: 50000,
+                timeoutMsg: 'expected text to be different after 5s'
+            }
+        );
+        await $(`//*[@id="layer_cart"]/div[1]/div[2]/div[4]/a`).click();
     }
     async deliveryDetails() {
 

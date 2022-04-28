@@ -49,8 +49,8 @@ export const config: WebdriverIO.Config = {
     //
     specs: [
         // './test/features/Login.feature',
-        // './test/features/Register.feature',
-        './test/features/AddProductToCart.feature'
+        //'./test/features/Register.feature',
+         './test/features/AddProductToCart.feature'
     ],
     // Patterns to exclude.
     exclude: [
@@ -126,7 +126,7 @@ export const config: WebdriverIO.Config = {
     baseUrl: 'http://automationpractice.com/index.php',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 10000,
+    waitforTimeout: 150000,
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
@@ -298,8 +298,13 @@ export const config: WebdriverIO.Config = {
      * @param {number}             result.duration  duration of scenario in milliseconds
      * @param {Object}             context          Cucumber World object
      */
-    // afterStep: function (step, scenario, result, context) {
-    // },
+    afterStep: async function (step, scenario, result, context) {
+        if (!result.passed) {
+            await browser.takeScreenshot();
+        }
+        console.log(`context: ${JSON.stringify(context)}`);
+    },
+
     /**
      *
      * Runs after a Cucumber Scenario.

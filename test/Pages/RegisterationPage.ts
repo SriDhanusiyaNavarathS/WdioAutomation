@@ -14,7 +14,7 @@ class Register {
         LastName.setValue(lastname)
 
         //Enter Password
-        let Password = await $(`//*[@id="passwd"]`)
+        let Password = await $(`/html/body/div/div[2]/div/div[3]/div/div/form/div[1]/div[5]/input`)
         Password.setValue(password)
 
         //Select DOB
@@ -24,7 +24,8 @@ class Register {
         await SelectMonths.selectByIndex(3)
         let SelectYear = await $(`//*[@id="years"]`);
         await SelectYear.selectByIndex(23)
-        await browser.pause(10000)
+        // static wait to view the screen
+        await browser.pause(1000)
     }
     async userAddressInformation(company, address, addressLine2, city, postalcode, AddInfo, Homephone, mobileNo, aliasAddress) {
         let Company = await $(`//*[@id="company"]`)
@@ -59,14 +60,15 @@ class Register {
 
         let AliasAddress = await $(`//*[@id="alias"]`)
         AliasAddress.setValue(aliasAddress)
-
-        await browser.pause(10000)
+        // static wait to view the screen
+        await browser.pause(1000)
     }
     async submitRegisterButton() {
+        await (await $(`//*[@id="submitAccount"]`)).waitForClickable()
         let RegisterButton = await $(`//*[@id="submitAccount"]`)
         RegisterButton.click();
     }
-    
+
 }
 const Registerpage = new Register()
 export { Registerpage }
